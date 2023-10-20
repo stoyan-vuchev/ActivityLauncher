@@ -1,5 +1,10 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
 android {
+
     signingConfigs {
         release {
             storeFile file(System.getenv("KEYSTORE") ?: "keystore.jks")
@@ -8,12 +13,16 @@ android {
             keyPassword System.getenv("KEY_PASSWORD")
         }
     }
-    compileSdk 33
+
+    compileSdk 34
+    namespace 'de.szalkowski.activitylauncher'
+
     defaultConfig {
         applicationId "de.szalkowski.activitylauncher"
-        minSdkVersion 19
-        targetSdkVersion 33
+        minSdkVersion 23
+        targetSdkVersion 34
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -22,27 +31,68 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
     bundle {
         language {
             enableSplit = false
         }
     }
+
     buildFeatures {
         viewBinding true
+        compose true
     }
-    namespace 'de.szalkowski.activitylauncher'
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.3'
+    }
+
 }
 
 dependencies {
+
+    // Legacy
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.fragment:fragment:1.6.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.preference:preference-ktx:1.2.1'
+
+    // Core
+
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.activity:activity-compose:1.8.0'
+    implementation 'androidx.navigation:navigation-compose:2.7.4'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2'
+    implementation 'com.google.android.material:material:1.10.0'
+
+    // Jetpack Compose
+
+    implementation platform('androidx.compose:compose-bom:2023.10.01')
+    implementation 'androidx.compose.foundation:foundation'
+    implementation 'androidx.compose.runtime:runtime'
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.material:material-icons-extended'
+
+    debugImplementation platform('androidx.compose:compose-bom:2023.10.01')
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    debugImplementation 'androidx.compose.ui:ui-tooling-preview'
+
 }
 
 configurations.implementation {
