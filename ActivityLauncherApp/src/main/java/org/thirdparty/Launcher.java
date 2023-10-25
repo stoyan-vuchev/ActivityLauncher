@@ -1,5 +1,6 @@
 package org.thirdparty;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -40,11 +41,12 @@ public class Launcher {
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     private static void startRootActivity(Context context, ComponentName activity) throws IOException, InterruptedException, IllegalArgumentException {
         var component = activity.flattenToShortString();
         boolean isValid = validateComponentName(component);
         if (!isValid) {
-            throw new IllegalArgumentException(String.format(context.getString(R.string.exception_invalid_component_name), component));
+            throw new IllegalArgumentException(String.format(context.getResources().getString(R.string.exception_invalid_component_name), component));
         }
         Process process = Runtime.getRuntime().exec(new String[]{"su", "-c", "am start -n " + component});
         String output = getProcessOutput(process);
@@ -54,6 +56,7 @@ public class Launcher {
             throw new RuntimeException(String.format(context.getString(R.string.exception_command_error), exitValue, output));
         }
     }
+
     /**
      * Got reference from stackoverflow.com URL:
      * https://stackoverflow.com/questions/309424/how-do-i-read-convert-an-inputstream-into-a-string-in-java
