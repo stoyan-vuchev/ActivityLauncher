@@ -1,6 +1,8 @@
-package de.szalkowski.activitylauncher.di
+package de.szalkowski.activitylauncher.manual_di
 
 import de.szalkowski.activitylauncher.domain.preferences.AppPreferences
+import de.szalkowski.activitylauncher.domain.use_case.main_activity.MainActivityUseCases
+import de.szalkowski.activitylauncher.domain.use_case.settings.SettingsUseCases
 
 /**
  * An abstraction of an Application module for a manual dependency injection.
@@ -11,4 +13,6 @@ import de.szalkowski.activitylauncher.domain.preferences.AppPreferences
  **/
 interface AppModule {
     val appPreferences: AppPreferences
+    val mainActivityUseCases: MainActivityUseCases
+    val settingsUseCases: SettingsUseCases
 }

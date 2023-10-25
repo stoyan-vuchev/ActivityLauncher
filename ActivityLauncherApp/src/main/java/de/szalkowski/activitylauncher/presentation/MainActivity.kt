@@ -23,17 +23,19 @@ class MainActivity : ComponentActivity() {
 
             val viewModel = viewModel<MainActivityViewModel>(
                 factory = viewModelFactory {
-                    val appPreferences by lazy { appModule.appPreferences }
-                    MainActivityViewModel(preferences = appPreferences)
+                    val useCases by lazy { appModule.mainActivityUseCases }
+                    MainActivityViewModel(useCases = useCases)
                 }
             )
 
-            val state by viewModel.state.collectAsStateWithLifecycle()
+            val isDisclaimerAccepted by viewModel.isDisclaimerAccepted.collectAsStateWithLifecycle()
+            val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+            val colorScheme by viewModel.colorScheme.collectAsStateWithLifecycle()
             val navController = rememberNavController()
 
             ActivityLauncherTheme(
-                themeMode = state.themeMode,
-                colorScheme = state.colorScheme
+                themeMode = themeMode,
+                colorScheme = colorScheme
             ) {
 
                 Surface(
@@ -44,9 +46,9 @@ class MainActivity : ComponentActivity() {
                     AppNavigationHost(navController = navController)
 
                     DisclaimerDialog(
-                        visible = state.isDisclaimerAccepted?.let { !it } ?: false,
+                        visible = isDisclaimerAccepted?.let { !it } ?: false,
                         onPositiveBtn = viewModel::onDisclaimerAccepted,
-                        onNegativeBtn = { finishAffinity() }
+                        onNegativeBtn = { this.finishAffinity() }
                     )
 
                 }

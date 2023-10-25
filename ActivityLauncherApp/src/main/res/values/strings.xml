@@ -9,6 +9,8 @@
     <string name="dialog_disclaimer">Use this software at your own risk. Some apps might not behave as expected when their activities are launched in the wrong context leading to data loss or even worse. You have been warned. Do you understand this and still want to use this software?</string>
     <string name="dialog_disclaimer_negative_btn_text" translatable="false">No</string>
     <string name="dialog_disclaimer_positive_btn_text" translatable="false">Yes</string>
+    <string name="dialog_cancel" translatable="false">Cancel</string>
+    <string name="dialog_apply" translatable="false">Apply</string>
     <string name="context_action_launch">Launch activity</string>
     <string name="context_action_launch_as_root">Launch activity as root</string>
     <string name="context_action_shortcut">Create shortcut</string>
@@ -36,7 +38,9 @@
     <string name="warning_root_check">Warning: Root privileges are probably not available on this device.</string>
     <string name="exception_invalid_component_name">Invalid or potentially harmful component name: %s</string>
     <string name="exception_command_error">Command returned error code: %d, output: %s</string>
-    <string name="category_title_about">About</string>
+    <string name="category_title_advanced" translatable="false">Advanced</string>
+    <string name="category_title_personalization" translatable="false">Personalization</string>
+    <string name="category_title_about" translatable="false">About</string>
     <string name="action_view_source">View source code</string>
     <string name="summary_action_view_source">The source code of this App is available for reading and modifying on GitHub. Feel free to send us pull requests with improvements and bugfixes.</string>
     <string name="action_view_translation">Help translate</string>
@@ -51,6 +55,7 @@
     <string name="settings_allow_root">Enable privileged mode</string>
     <string name="settings_summary_allow_root">Allow launching private activities by using root privileges</string>
     <string name="settings_language">Language</string>
+    <string name="settings_language_default" translatable="false">System Default</string>
     <string name="settings_theme">Theme</string>
     <string name="theme_default">System Default</string>
     <string name="theme_light">Light Theme</string>
