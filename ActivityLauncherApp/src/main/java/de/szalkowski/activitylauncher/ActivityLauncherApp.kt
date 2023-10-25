@@ -1,12 +1,17 @@
 package de.szalkowski.activitylauncher
 
 import android.app.Application
-import de.szalkowski.activitylauncher.di.AppModule
-import de.szalkowski.activitylauncher.di.AppModuleImpl
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
+import de.szalkowski.activitylauncher.data.preferences.AppPreferencesImpl.Companion.APP_DATA_STORE_PREFERENCES
+import de.szalkowski.activitylauncher.manual_di.AppModule
+import de.szalkowski.activitylauncher.manual_di.AppModuleImpl
 
 class ActivityLauncherApp : Application() {
 
     companion object {
+
+        private val Context.dataStore by preferencesDataStore(APP_DATA_STORE_PREFERENCES)
 
         /**
          * The application module property of the manual dependency injection.
@@ -19,7 +24,11 @@ class ActivityLauncherApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appModule = AppModuleImpl(this)
+        initAppModule()
+    }
+
+    private fun initAppModule() {
+        appModule = AppModuleImpl(dataStore)
     }
 
 }

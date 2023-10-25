@@ -2,20 +2,18 @@ package de.szalkowski.activitylauncher.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.Color
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
-import com.stoyanvuchev.systemuibarstweaker.SystemBarStyle
-import com.stoyanvuchev.systemuibarstweaker.SystemUIBarsConfiguration
+import com.stoyanvuchev.systemuibarstweaker.rememberSystemUIBarsTweaker
 import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
 import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.presentation.ext.LocalColorScheme
 import de.szalkowski.activitylauncher.presentation.ext.LocalThemeMode
 import de.szalkowski.activitylauncher.presentation.ext.isDarkModeApplied
+import de.szalkowski.activitylauncher.presentation.ext.materialColorScheme
 
 @Composable
 fun ActivityLauncherTheme(
@@ -24,42 +22,42 @@ fun ActivityLauncherTheme(
     content: @Composable () -> Unit
 ) {
 
-    CompositionLocalProvider(LocalThemeMode provides themeMode) {
+    CompositionLocalProvider(
+        LocalThemeMode provides themeMode,
+        LocalColorScheme provides colorScheme
+    ) {
 
+        val systemUIBarsTweaker = rememberSystemUIBarsTweaker()
         val isDarkModeApplied = isDarkModeApplied()
-        val colors = when (colorScheme) {
+        val colors = LocalColorScheme.current.materialColorScheme(isDarkModeApplied)
 
-            ColorScheme.APP_DEFAULT -> if (isDarkModeApplied) DarkColors.asColorScheme()
-            else LightColors.asColorScheme()
+        DisposableEffect(
+            systemUIBarsTweaker,
+            isDarkModeApplied,
+            colors
+        ) {
 
-            ColorScheme.M3_LAVENDER -> if (isDarkModeApplied) darkColorScheme()
-            else lightColorScheme()
+            systemUIBarsTweaker.tweakSystemBarsStyle(
+                statusBarStyle = systemUIBarsTweaker.statusBarStyle.copy(
+                    darkIcons = !isDarkModeApplied
+                ),
+                navigationBarStyle = systemUIBarsTweaker.navigationBarStyle.copy(
+                    darkIcons = !isDarkModeApplied,
+                    enforceContrast = false,
+                    color = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) Color.Black
+                    else colors.surface.copy(alpha = .9f)
+                )
+            )
 
-            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-
-                val context = LocalContext.current
-
-                if (isDarkModeApplied) dynamicDarkColorScheme(context)
-                else dynamicLightColorScheme(context)
-
-            } else LightColors.asColorScheme()
-
+            onDispose {}
         }
 
         ProvideSystemUIBarsTweaker(
-            initialConfiguration = SystemUIBarsConfiguration.default(
-                statusBarStyle = SystemBarStyle.defaultStatusBarStyle(
-                    darkIcons = !isDarkModeApplied
-                ),
-                navigationBarStyle = SystemBarStyle.defaultNavigationBarStyle(
-                    darkIcons = !isDarkModeApplied
-                )
-            )
+            systemUIBarsTweaker = systemUIBarsTweaker
         ) {
 
             MaterialTheme(
                 colorScheme = colors,
-                typography = Typography,
                 content = content
             )
 

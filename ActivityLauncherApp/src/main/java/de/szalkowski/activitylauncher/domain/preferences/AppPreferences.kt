@@ -2,32 +2,33 @@ package de.szalkowski.activitylauncher.domain.preferences
 
 import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
 import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import kotlinx.coroutines.flow.Flow
 
 interface AppPreferences {
 
     // Disclaimer
 
-    suspend fun getIsDisclaimerAccepted(): Boolean
+    fun observeIsDisclaimerAccepted(): Flow<Boolean?>
     suspend fun setIsDisclaimerAccepted()
 
     // Theme Mode
 
-    suspend fun getThemeMode(): ThemeMode
+    fun observeThemeMode(): Flow<ThemeMode>
     suspend fun setThemeMode(themeMode: ThemeMode)
 
     // Color Scheme
 
-    suspend fun getColorScheme(): ColorScheme
+    fun observeColorScheme(): Flow<ColorScheme>
     suspend fun setColorScheme(colorScheme: ColorScheme)
 
     // Root Access
 
-    suspend fun getIsRootAccessAllowed(rootAccessAllowed: Boolean): Boolean
-    suspend fun setIsRootAccessAllowed(rootAccessAllowed: Boolean)
+    suspend fun getAreRootPrivilegesEnabled(): Boolean
+    suspend fun setAreRootPrivilegesEnabled(enabled: Boolean)
 
     // Hidden Private Activities
 
     suspend fun getArePrivateActivitiesHidden(): Boolean
-    suspend fun setArePrivateActivitiesHidden(arePrivateActivitiesHidden: Boolean)
+    suspend fun setArePrivateActivitiesHidden(hidden: Boolean)
 
 }

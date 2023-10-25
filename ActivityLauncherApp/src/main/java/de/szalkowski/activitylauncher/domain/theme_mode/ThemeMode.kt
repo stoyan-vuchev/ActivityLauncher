@@ -29,10 +29,10 @@ enum class ThemeMode {
         /**
          * Returns the default [ThemeMode].
          * - For API >= 28: [ThemeMode.SYSTEM]
-         * - For API < 28: [ThemeMode.LIGHT]
+         * - For API < 28: [ThemeMode.DARK]
          **/
         val Default = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) SYSTEM
-        else LIGHT
+        else DARK
 
     }
 
