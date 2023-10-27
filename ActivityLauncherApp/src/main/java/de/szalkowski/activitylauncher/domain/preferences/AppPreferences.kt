@@ -1,7 +1,7 @@
 package de.szalkowski.activitylauncher.domain.preferences
 
-import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
-import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.domain.preferences.color_scheme.ColorScheme
+import de.szalkowski.activitylauncher.domain.preferences.theme_mode.ThemeMode
 import kotlinx.coroutines.flow.Flow
 
 interface AppPreferences {
@@ -28,6 +28,7 @@ interface AppPreferences {
 
     // Hidden Private Activities
 
+    fun observeArePrivateActivitiesHidden(): Flow<Boolean>
     suspend fun getArePrivateActivitiesHidden(): Boolean
     suspend fun setArePrivateActivitiesHidden(hidden: Boolean)
 

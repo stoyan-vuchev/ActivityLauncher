@@ -94,10 +94,9 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-tooling-preview'
 
-    // System UI Bars Tweaker and Responsive Scaffold.
+    // System UI Bars Tweaker
 
     implementation 'com.github.stoyan-vuchev:system-ui-bars-tweaker:1.0.0'
-    implementation 'com.github.stoyan-vuchev:responsive-scaffold:1.0.2'
 
     // DataStore Preferences
 

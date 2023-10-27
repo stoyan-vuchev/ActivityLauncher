@@ -24,4 +24,8 @@ sealed interface UiString {
         is StringResource -> context.resources.getString(this.resId, this.formatArgs)
     }
 
+    companion object {
+        val EmptyString get() = DynamicString("")
+    }
+
 }

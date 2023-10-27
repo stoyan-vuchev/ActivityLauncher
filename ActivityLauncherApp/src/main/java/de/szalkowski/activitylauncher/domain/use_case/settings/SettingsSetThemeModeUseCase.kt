@@ -1,7 +1,7 @@
 package de.szalkowski.activitylauncher.domain.use_case.settings
 
 import de.szalkowski.activitylauncher.domain.preferences.AppPreferences
-import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.domain.preferences.theme_mode.ThemeMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

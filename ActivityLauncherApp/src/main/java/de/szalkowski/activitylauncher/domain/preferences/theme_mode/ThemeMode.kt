@@ -1,4 +1,4 @@
-package de.szalkowski.activitylauncher.domain.theme_mode
+package de.szalkowski.activitylauncher.domain.preferences.theme_mode
 
 import android.os.Build
 import androidx.annotation.RequiresApi

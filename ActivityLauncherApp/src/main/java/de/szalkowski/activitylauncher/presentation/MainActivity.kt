@@ -3,6 +3,9 @@ package de.szalkowski.activitylauncher.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -43,7 +46,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.surface
                 ) {
 
-                    AppNavigationHost(navController = navController)
+                    AnimatedVisibility(
+                        visible = isDisclaimerAccepted == true,
+                        enter = fadeIn(),
+                        exit = ExitTransition.None
+                    ) { AppNavigationHost(navController = navController) }
 
                     DisclaimerDialog(
                         visible = isDisclaimerAccepted?.let { !it } ?: false,

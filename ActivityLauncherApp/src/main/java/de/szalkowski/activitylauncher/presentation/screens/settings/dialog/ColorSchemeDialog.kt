@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.szalkowski.activitylauncher.R
-import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
+import de.szalkowski.activitylauncher.domain.preferences.color_scheme.ColorScheme
 import de.szalkowski.activitylauncher.presentation.common.PreferencesDialog
 import de.szalkowski.activitylauncher.presentation.common.RadioButtonItem
 

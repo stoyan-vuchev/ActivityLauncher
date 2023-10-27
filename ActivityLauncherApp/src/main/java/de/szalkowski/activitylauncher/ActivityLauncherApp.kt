@@ -28,7 +28,10 @@ class ActivityLauncherApp : Application() {
     }
 
     private fun initAppModule() {
-        appModule = AppModuleImpl(dataStore)
+        appModule = AppModuleImpl(
+            dataStore = this.dataStore,
+            packageManager = this.packageManager
+        )
     }
 
 }

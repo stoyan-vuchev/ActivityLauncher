@@ -6,7 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import de.szalkowski.activitylauncher.R
-import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.domain.preferences.theme_mode.ThemeMode
 
 /**
  * CompositionLocal key for providing a [ThemeMode] to the composition.

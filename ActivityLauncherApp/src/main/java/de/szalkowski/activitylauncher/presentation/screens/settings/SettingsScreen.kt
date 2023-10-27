@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -28,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.stoyanvuchev.responsive_scaffold.ResponsiveScaffold
 import de.szalkowski.activitylauncher.R
 import de.szalkowski.activitylauncher.presentation.screens.settings.SettingsScreenUiAction.*
 import de.szalkowski.activitylauncher.presentation.screens.settings.dialog.SettingsDialog
@@ -48,9 +48,8 @@ fun SettingsScreen(
         onUiAction = onUiAction
     )
 
-    ResponsiveScaffold(
+    Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
 
             LargeTopAppBar(

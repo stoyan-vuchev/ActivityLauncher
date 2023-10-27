@@ -3,8 +3,8 @@ package de.szalkowski.activitylauncher.presentation.screens.settings
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Immutable
-import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
-import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.domain.preferences.color_scheme.ColorScheme
+import de.szalkowski.activitylauncher.domain.preferences.theme_mode.ThemeMode
 import de.szalkowski.activitylauncher.presentation.screens.settings.dialog.SettingsDialogType
 
 @Immutable
