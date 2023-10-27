@@ -21,6 +21,8 @@ import de.szalkowski.activitylauncher.presentation.ext.navigateToScreen
 import de.szalkowski.activitylauncher.presentation.ext.viewModelFactory
 import de.szalkowski.activitylauncher.presentation.screens.AppScreens
 import de.szalkowski.activitylauncher.presentation.screens.activities.ActivitiesScreen
+import de.szalkowski.activitylauncher.presentation.screens.activities.ActivitiesScreenUiAction.Navigate
+import de.szalkowski.activitylauncher.presentation.screens.activities.ActivitiesScreenViewModel
 import de.szalkowski.activitylauncher.presentation.screens.settings.SettingsScreen
 import de.szalkowski.activitylauncher.presentation.screens.settings.SettingsScreenUiAction.ChangeLanguageFromSystemSettings
 import de.szalkowski.activitylauncher.presentation.screens.settings.SettingsScreenUiAction.NavigateUp
@@ -43,7 +45,39 @@ fun AppNavigationHost(
 
     composable(
         route = AppScreens.Activities.route,
-        content = { ActivitiesScreen(onNavigateToScreen = navController::navigateToScreen) }
+        content = {
+
+            val viewModel = viewModel<ActivitiesScreenViewModel>(
+                factory = viewModelFactory {
+
+                    val useCases by lazy { appModule.activitiesScreenUseCases }
+                    val appsLoader by lazy { appModule.appsLoader }
+
+                    ActivitiesScreenViewModel(
+                        useCases = useCases,
+                        appsLoader = appsLoader
+                    )
+
+                }
+            )
+
+            val screenState by viewModel.state.collectAsStateWithLifecycle()
+
+            LaunchedEffect(viewModel.uiActionFlow) {
+                viewModel.uiActionFlow.collectLatest { uiAction ->
+                    when (uiAction) {
+                        is Navigate -> navController.navigateToScreen(uiAction.screen)
+                        else -> Unit
+                    }
+                }
+            }
+
+            ActivitiesScreen(
+                screenState = screenState,
+                onUiAction = viewModel::onUiAction
+            )
+
+        }
     )
 
     composable(
@@ -52,7 +86,7 @@ fun AppNavigationHost(
 
             val viewModel = viewModel<SettingsScreenViewModel>(
                 factory = viewModelFactory {
-                    val useCases by lazy { appModule.settingsUseCases }
+                    val useCases by lazy { appModule.settingsScreenUseCases }
                     SettingsScreenViewModel(useCases = useCases)
                 }
             )

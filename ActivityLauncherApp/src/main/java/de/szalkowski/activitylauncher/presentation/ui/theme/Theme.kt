@@ -8,8 +8,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import com.stoyanvuchev.systemuibarstweaker.ProvideSystemUIBarsTweaker
 import com.stoyanvuchev.systemuibarstweaker.rememberSystemUIBarsTweaker
-import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
-import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.domain.preferences.color_scheme.ColorScheme
+import de.szalkowski.activitylauncher.domain.preferences.theme_mode.ThemeMode
 import de.szalkowski.activitylauncher.presentation.ext.LocalColorScheme
 import de.szalkowski.activitylauncher.presentation.ext.LocalThemeMode
 import de.szalkowski.activitylauncher.presentation.ext.isDarkModeApplied

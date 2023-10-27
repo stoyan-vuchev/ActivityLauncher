@@ -11,7 +11,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import de.szalkowski.activitylauncher.R
-import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
+import de.szalkowski.activitylauncher.domain.preferences.color_scheme.ColorScheme
 import de.szalkowski.activitylauncher.presentation.ui.theme.DarkColors
 import de.szalkowski.activitylauncher.presentation.ui.theme.LightColors
 import de.szalkowski.activitylauncher.presentation.ui.theme.asColorScheme

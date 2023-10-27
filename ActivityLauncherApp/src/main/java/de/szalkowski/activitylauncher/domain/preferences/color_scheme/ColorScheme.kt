@@ -1,4 +1,4 @@
-package de.szalkowski.activitylauncher.domain.color_scheme
+package de.szalkowski.activitylauncher.domain.preferences.color_scheme
 
 import android.os.Build
 import androidx.annotation.RequiresApi

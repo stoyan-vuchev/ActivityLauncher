@@ -3,8 +3,8 @@ package de.szalkowski.activitylauncher.presentation.screens.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.szalkowski.activitylauncher.R
-import de.szalkowski.activitylauncher.domain.color_scheme.ColorScheme
-import de.szalkowski.activitylauncher.domain.theme_mode.ThemeMode
+import de.szalkowski.activitylauncher.domain.preferences.color_scheme.ColorScheme
+import de.szalkowski.activitylauncher.domain.preferences.theme_mode.ThemeMode
 import de.szalkowski.activitylauncher.domain.use_case.settings.SettingsUseCases
 import de.szalkowski.activitylauncher.presentation.screens.settings.SettingsScreenUiAction.SetColorScheme
 import de.szalkowski.activitylauncher.presentation.screens.settings.SettingsScreenUiAction.SetDialogType
