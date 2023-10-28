@@ -3,6 +3,7 @@ package de.szalkowski.activitylauncher.presentation.screens.activities
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,13 +42,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import de.szalkowski.activitylauncher.R
+import de.szalkowski.activitylauncher.presentation.ext.ListItemShapeType
 import de.szalkowski.activitylauncher.presentation.ext.rememberListItemShape
 import de.szalkowski.activitylauncher.presentation.screens.AppScreens
 import de.szalkowski.activitylauncher.presentation.screens.activities.ActivitiesScreenUiAction.Navigate
 import de.szalkowski.activitylauncher.presentation.screens.activities.ActivitiesScreenUiAction.Reload
 import de.szalkowski.activitylauncher.utils.UiString
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ActivitiesScreen(
     screenState: ActivitiesScreenState,
@@ -105,29 +107,78 @@ fun ActivitiesScreen(
                 .fillMaxSize()
                 .nestedScroll(connection = topAppBarScrollBehavior.nestedScrollConnection),
             state = activitiesListState,
-            contentPadding = paddingValues,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            contentPadding = paddingValues
         ) {
+
+            val expandedItemsList = screenState.expandedItemsIndexList
 
             item(key = "top_spacer") { Spacer(modifier = Modifier.height(16.dp)) }
 
-            itemsIndexed(
-                items = screenState.appsList,
-                key = { _, item -> "item_$item" }
-            ) { index, app ->
+            screenState.appsList.forEachIndexed { appIndex, app ->
 
-                val shape = rememberListItemShape(
-                    index = index,
-                    lastIndex = screenState.appsList.size - 1
-                )
+                val expanded = expandedItemsList.find { it == appIndex }?.let { true } == true
+                val appLastIndex = screenState.appsList.size - 1
 
-                ActivitiesScreenItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    app = app,
-                    shape = shape
-                )
+                val activitiesListSize = app.activitiesList.size
+                val activitiesLastIndex = activitiesListSize - 1
+
+                item(key = "app_$app") {
+
+                    val appItemShape = rememberListItemShape(
+                        index = appIndex,
+                        lastIndex = appLastIndex,
+                        type = ListItemShapeType.App(expanded = expanded)
+                    )
+
+                    ActivitiesScreenItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .animateItemPlacement(),
+                        app = app,
+                        shape = appItemShape,
+                        index = appIndex,
+                        expanded = expanded,
+                        onUiAction = onUiAction
+                    )
+
+                }
+
+                if (expanded) {
+
+                    itemsIndexed(
+                        items = app.activitiesList,
+                        key = { _, activity -> "app_${app}_activity_$activity" }
+                    ) { activityIndex, activity ->
+
+                        val activityItemShape = rememberListItemShape(
+                            index = activityIndex,
+                            lastIndex = activitiesLastIndex,
+                            type = ListItemShapeType.Activity(
+                                appItemIndex = appIndex,
+                                appItemLastIndex = appLastIndex
+                            )
+                        )
+
+                        ActivitiesScreenItemActivityItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .animateItemPlacement(),
+                            index = activityIndex,
+                            lastIndex = activitiesLastIndex,
+                            activitiesCount = app.activitiesCount,
+                            activity = activity,
+                            shape = activityItemShape
+                        )
+
+                    }
+
+                }
+
+                item(key = "app_${app.packageName}_separator") {
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
 
             }
 

@@ -1,11 +1,13 @@
 package de.szalkowski.activitylauncher.presentation.screens.activities
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.szalkowski.activitylauncher.domain.loader.AppsLoader
 import de.szalkowski.activitylauncher.domain.model.AppModel
 import de.szalkowski.activitylauncher.domain.use_case.activities.ActivitiesScreenUseCases
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -26,10 +28,12 @@ class ActivitiesScreenViewModel(
     private val uiActionChannel = Channel<ActivitiesScreenUiAction>()
     val uiActionFlow = uiActionChannel.receiveAsFlow()
 
+    private val _expandedItemsIndexList = MutableStateFlow(mutableStateListOf<Int>())
     val state = combine(
         flow = useCases.observeArePrivateActivitiesHidden(),
-        flow2 = appsLoader.state
-    ) { hidden, appsLoaderState ->
+        flow2 = appsLoader.state,
+        flow3 = _expandedItemsIndexList
+    ) { hidden, appsLoaderState, expandedItemsIndexList ->
 
         ActivitiesScreenState(
             arePrivateActivitiesHidden = hidden,
@@ -38,18 +42,24 @@ class ActivitiesScreenViewModel(
             totalApps = appsLoaderState.totalApps,
             appsList = appsLoaderState.appsList.map { app ->
 
+                val activitiesList = app.activitiesList.filter { activity ->
+                    if (hidden) !activity.isPrivate
+                    else true
+                }
+
                 AppModel(
                     name = app.name,
                     packageName = app.packageName,
                     icon = app.icon,
-                    activities = app.activities.filter { activity ->
-                        if (hidden) !activity.isPrivate
-                        else true
-                    }
+                    activitiesCount = activitiesList.size,
+                    activitiesList = activitiesList.take(
+                        activitiesList.size.coerceAtMost(10)
+                    )
                 )
 
             },
-            error = appsLoaderState.error
+            error = appsLoaderState.error,
+            expandedItemsIndexList = expandedItemsIndexList
         )
 
     }.stateIn(
@@ -61,8 +71,15 @@ class ActivitiesScreenViewModel(
     fun onUiAction(uiAction: ActivitiesScreenUiAction) = with(uiAction) {
         when (this) {
             is ActivitiesScreenUiAction.Navigate -> sendUiAction(this)
+            is ActivitiesScreenUiAction.ExpandOrCollapseItem -> expandOrCollapseItem(index)
             is ActivitiesScreenUiAction.Reload -> loadApps()
         }
+    }
+
+    private fun expandOrCollapseItem(index: Int) {
+        _expandedItemsIndexList.value.find { it == index }?.let {
+            _expandedItemsIndexList.value.remove(it)
+        } ?: _expandedItemsIndexList.value.add(index)
     }
 
     private fun loadApps() {

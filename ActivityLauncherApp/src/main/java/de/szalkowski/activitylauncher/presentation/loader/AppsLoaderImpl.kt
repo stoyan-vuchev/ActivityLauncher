@@ -71,15 +71,13 @@ class AppsLoaderImpl(
                         val appIcon = drawableToBitmap(appInfo.loadIcon(packageManager))
                         val activities = mutableListOf<ActivityModel>()
 
-                        packageInfo.activities?.forEach { activityInfo ->
+                        packageInfo.activities?.forEach { activity ->
 
-                            val componentName = ComponentName(packageName, activityInfo.name)
-                            val enabledState =
-                                packageManager.getComponentEnabledSetting(componentName)
-                            val activityName = activityInfo.name
-                            val activityIcon =
-                                drawableToBitmap(activityInfo.loadIcon(packageManager))
-                            val isPrivate = isActivityPrivate(activityInfo, enabledState)
+                            val component = ComponentName(packageName, activity.name)
+                            val enabledState = packageManager.getComponentEnabledSetting(component)
+                            val activityName = activity.name
+                            val activityIcon = drawableToBitmap(activity.loadIcon(packageManager))
+                            val isPrivate = isActivityPrivate(activity, enabledState)
 
                             activities.add(
                                 ActivityModel(
@@ -98,7 +96,8 @@ class AppsLoaderImpl(
                                     name = appName,
                                     packageName = packageName,
                                     icon = appIcon,
-                                    activities = activities
+                                    activitiesCount = activities.size,
+                                    activitiesList = activities.sortedBy { it.name }
                                 )
                             )
                         }
@@ -109,8 +108,9 @@ class AppsLoaderImpl(
                     }
 
                     // Update the apps list with the new list,
-                    // clear the temporary list and stop the loading.
-                    _appsList.update { list }.also {
+                    // clear the temporary lists and stop the loading.
+                    _appsList.update { list.sortedBy { it.name } }.also {
+                        installedPackages = mutableListOf()
                         list = mutableListOf()
                         _isLoading.update { false }
                     }

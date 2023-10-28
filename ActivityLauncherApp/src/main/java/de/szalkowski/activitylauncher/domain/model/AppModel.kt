@@ -8,5 +8,6 @@ data class AppModel(
     val name: String,
     val packageName: String,
     val icon: Bitmap,
-    val activities: List<ActivityModel>
+    val activitiesCount: Int,
+    val activitiesList: List<ActivityModel>
 )
